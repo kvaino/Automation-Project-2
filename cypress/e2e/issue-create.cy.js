@@ -12,19 +12,17 @@ describe('Issue create', () => {
   it('Should create an issue and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
+      //Type value to description input field
+      cy.get('.ql-editor').click().type('TEST_DESCRIPTION');
+      //Type value to title input field
+      //Order of filling in the fields is first description, then title on purpose
+      //Otherwise filling title first sometimes doesn't work due to web page implementation
+      cy.get('input[name="title"]').type('TEST_TITLE');
 
       //open issue type dropdown and choose Story
       cy.get('[data-testid="select:type"]').click();
       cy.get('[data-testid="select-option:Story"]')
         .trigger('click');
-
-      //Type value to description input field
-      cy.get('.ql-editor').click().type('TEST_DESCRIPTION');
-
-      //Type value to title input field
-      //Order of filling in the fields is first description, then title on purpose
-      //Otherwise filling title first sometimes doesn't work due to web page implementation
-      cy.get('input[name="title"]').type('TEST_TITLE');
 
       //Select Lord Gaben from reporter dropdown
       cy.get('[data-testid="select:userIds"]').click();
@@ -47,11 +45,16 @@ describe('Issue create', () => {
         .should('have.length', '5')
         .first()
         .find('p')
-        .contains('TEST_TITLE');
-      //Assert that correct avatar and type icon are visible
-      cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
-      cy.get('[data-testid="icon:story"]').should('be.visible');
+        .contains('TEST_TITLE')
+        .siblings()
+        .within(() => {
+          //Assert that correct avatar and type icon are visible
+          cy.get('[data-testid="avatar:Lord Gaben"]').should('be.visible');
+          cy.get('[data-testid="icon:story"]').should('be.visible');
+        });
+
     });
+
   });
 
   it('Should validate title is required field if missing', () => {
@@ -68,21 +71,17 @@ describe('Issue create', () => {
   it('Should create a bug report and validate it successfully', () => {
     //System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
+      //Type value to description input field
+      cy.get('.ql-editor').type('Kristel My bug description');
+      //Type value to title input field
+      cy.get('input[name="title"]').type('Kristel Bug');
 
-      //open issue type dropdown and choose Story
+      //open issue type dropdown and choose Bug
       cy.get('[data-testid="select:type"]').click();
       cy.get('[data-testid="select-option:Bug"]')
         .trigger('click');
 
-      //Type value to description input field
-      cy.get('.ql-editor').type('Kristel My bug description');
-
-      //Type value to title input field
-      //Order of filling in the fields is first description, then title on purpose
-      //Otherwise filling title first sometimes doesn't work due to web page implementation
-      cy.get('input[name="title"]').type('Kristel Bug');
-
-      //Select Lord Gaben from reporter dropdown
+      //Select Pickle Rick from reporter dropdown
       cy.get('[data-testid="select:reporterId"]').click();
       cy.get('[data-testid="select-option:Pickle Rick"]').click();
 
@@ -107,39 +106,23 @@ describe('Issue create', () => {
         .should('have.length', '5')
         .first()
         .find('p')
-        .contains('Kristel Bug');
+        .contains('Kristel Bug')
+        .siblings()
+        .within(() => {
+          cy.get('[data-testid="icon:bug"]').should('be.visible');
+          cy.get('[data-testid="avatar:Pickle Rick"]').should('be.visible');
+        })
 
-      /*
-      Takes avator from another issue, not from this one.
-      cy.get('[data-testid="avatar:Pickle Rick"]').should('be.visible');
-
-      //Assert that correct avatar and type icon are visible
-      cy.get('[data-testid="avatar:Pickle Rick"]').should('be.visible');
-       
-      When entering description, the the task is turned back to Task. Mistake!
-      cy.get('[data-testid="icon:bug"]').should('be.visible');
-      */
     });
   });
 
-  it('Use faker to make a test case', () => {
+  it.only('Use faker to make a test case', () => {
     let title = faker.lorem.word();
     let description = faker.lorem.sentence();
-    const issueType = 'Task';
 
     cy.get('[data-testid="modal:issue-create"]').within(() => {
-
-      //open issue type dropdown and choose Story
-      // cy.get('[data-testid="select:type"]').click();
-      //cy.get('[data-testid="select-option:Bug"]')
-      //  .trigger('click');
-
-      //Type value to description input field
+      //Type value to description and title input field
       cy.get('.ql-editor').type(description);
-
-      //Type value to title input field
-      //Order of filling in the fields is first description, then title on purpose
-      //Otherwise filling title first sometimes doesn't work due to web page implementation
       cy.get('input[name="title"]').type(title);
 
       //Select Lord Gaben from reporter dropdown
@@ -167,14 +150,20 @@ describe('Issue create', () => {
         .should('have.length', '5')
         .first()
         .find('p')
-        .contains(title);
+        .contains(title)
+        .siblings()
+        .within(() => {
+          cy.get('[data-testid="icon:task"]').should('be.visible');
+          cy.get('[data-testid="avatar:Baby Yoda"]').should('be.visible');
+        })
     });
   });
+
 });
 
 /** 
 * Function to open issue creation page.
-* @param {String} webPage - new issue creation link.
+* @param {String} webPage - new issue creation page..
 */
 function openIssue(webPage) {
   cy.visit(webPage);
