@@ -38,13 +38,10 @@ describe('Deleting issues', () => {
         selectConfirmationMessage(cancelDeletion);
 
         //Close the issue
-        getIssueDetailsModal().within(() => {
-            //Select the first close icon
-            cy.get('[data-testid="icon:close"]').first().click();
-        });
+        cy.get('[data-testid="icon:close"]').first().click();
 
         cy.reload()
-        cy.get('[data-testid="board-list:backlog').should('be.visible').and('have.length', '1').within(() => {
+        cy.get('[data-testid="board-list:backlog').should('be.visible').within(() => {
             //Assert that backlog has four issues and issue has not been deleted
             cy.get('[data-testid="list-issue"]')
                 .should('have.length', '4')
@@ -64,11 +61,9 @@ const cancelDeletion = 'Cancel'
 * @summary On issue details view, press the trash icon and click it to delete the issue.
 */
 function pressDeleteIcon() {
-    getIssueDetailsModal().within(() => {
-        cy.get('[data-testid="icon:trash"]')
-            .trigger('mouseover')
-            .trigger('click');
-    });
+    cy.get('[data-testid="icon:trash"]')
+        .trigger('mouseover')
+        .trigger('click');
 }
 
 /** 
