@@ -22,6 +22,7 @@ describe('Issue delete', () => {
     IssueModal.confirmDeletion();
     //control that issue is not visible on board anymore
     IssueModal.ensureIssueIsNotVisibleOnBoard(issueTitle);
+    // Step here to confirm how many issues are in backlog
   });
 
   it('Should cancel deletion process successfully', () => {
@@ -30,5 +31,7 @@ describe('Issue delete', () => {
     IssueModal.cancelDeletion();
     IssueModal.closeDetailModal();
     IssueModal.ensureIssueIsVisibleOnBoard(issueTitle);
+    // Step here to confirm how many issues are in backlog
+    
   });
 });

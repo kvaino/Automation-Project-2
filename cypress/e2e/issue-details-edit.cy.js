@@ -62,4 +62,17 @@ describe('Issue details editing', () => {
   });
 
   const getIssueDetailsModal = () => cy.get('[data-testid="modal:issue-details"]');
+
+  it.only('Checking the priority dropdown', () => {
+    const expectedLenght = 5;
+    const priorities = [];
+
+    
+    cy.get('[data-testid="select:priority"]').click('bottomRight');
+
+    
+  
+    
+
+  })
 });
