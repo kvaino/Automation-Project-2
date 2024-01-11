@@ -36,7 +36,6 @@ describe("Issue time tracking test cases", () => {
     getOriginalEstimateHoursInputField()
       .click()
       .type(FIRST_ADDED_TIME_ESTIMATION);
-    cy.contains("Original Estimate (hours)").click();
     cy.contains(FIRST_ADDED_TIME_ESTIMATION + "h estimated").should(
       "be.visible"
     );
