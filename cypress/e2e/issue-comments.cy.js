@@ -16,7 +16,7 @@ describe("Issue comments creating, editing and deleting", () => {
   const getIssueDetailsModal = () =>
     cy.get('[data-testid="modal:issue-details"]');
 
-  it("Should create a comment successfully", () => {
+  it.only("Should create a comment successfully", () => {
     const comment = "TEST_COMMENT";
 
     getIssueDetailsModal().within(() => {
