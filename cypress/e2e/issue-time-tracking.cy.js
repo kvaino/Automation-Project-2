@@ -72,7 +72,7 @@ describe("Issue comments creating, editing and deleting", () => {
 
   it("Should successfully add, edit and remove time spent on issue", () => {
     const NUMBER_TWO = "2";
-    const NUMBER_FIVE = '5'
+    const NUMBER_FIVE = "5";
     getIssueDetailsModal().within(() => {
       getTimeLog().should("contain", "8h estimated");
       cy.get('[data-testid="icon:stopwatch"]').click();
@@ -89,9 +89,8 @@ describe("Issue comments creating, editing and deleting", () => {
       .should("contain", NUMBER_FIVE + "h remaining")
       .and("not.contain", "No time logged");
 
-    //Close the issue between test cases and re-open the issue
-    cy.get('[data-testid="icon:close"]').first().click();
-    cy.contains(issueTitle).click();
+    closeIssueDetails();
+    openIssueDuringTest();
 
     getIssueDetailsModal().within(() => {
       getTimeLog().should("contain", NUMBER_FIVE + "h remaining");
