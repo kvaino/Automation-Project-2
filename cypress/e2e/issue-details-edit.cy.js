@@ -1,3 +1,5 @@
+import IssueModal from "../../pages/IssueModal";
+
 describe('Issue details editing', () => {
   beforeEach(() => {
     cy.visit('/');
